@@ -1,0 +1,7 @@
+{
+  "name": "ambit",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
