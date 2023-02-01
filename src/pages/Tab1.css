@@ -1,0 +1,23 @@
+#map-container {
+  height: 100%;
+  width: 100%;
+}
+
+.container {
+  position: relative;
+  display: flex;
+}
+
+.drop-container {
+  height: 45px;
+  border-radius: 16px;
+  opacity: 0.8;
+  width: 80%;
+  margin-top: 24px;
+  margin-left: 4rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  z-index: 99;
+}
