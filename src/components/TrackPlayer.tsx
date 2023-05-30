@@ -1,15 +1,9 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {View, Text, Modal, Image, StyleSheet, Pressable} from 'react-native';
 import Slider from '@react-native-community/slider';
-// import ShuffleIcon from '../assets/icons/shuffle.png';
-// import PrevIcon from '../assets/icons/prev.png';
-// import NextIcon from '../assets/icons/next.png';
-// import LoopIcon from '../assets/icons/loop.png';
-// import PlayIcon from '../assets/icons/play.png';
-// import PauseIcon from '../assets/icons/pause.png';
-// import MenuIcon from '../assets/icons/down.png';
+
 import {secsToTimestamp} from '../functions/formatTime';
-import {useProgress} from 'react-native-track-player';
+//import {useProgress} from 'react-native-track-player';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 export default function TrackPlayerComponent({
@@ -56,28 +50,7 @@ export default function TrackPlayerComponent({
         }}>
         <MusicMenu />
       </Pressable>
-      {/* <Text style={styles.mainText}>Playing from My Playlist</Text> */}
-      {/* <Text
-        style={[
-          styles.mainText,
-          {top: '20%', alignSelf: 'center', fontWeight: 'bold'},
-        ]}>
-        {selectedMusic?.album}
-      </Text> */}
-      {/* <Image
-        style={{width: 350, height: 350, marginVertical: 75}}
-        source={{uri: selectedMusic?.artwork}}
-      /> */}
-      {/* <View
-        style={{
-          width: 250,
-          height: 250,
-          borderRadius: 24,
-          marginTop: 100,
-          alignSelf: 'center',
-          backgroundColor: 'pink',
-        }}
-      /> */}
+
       <View
         style={{
           width: 250,
@@ -88,7 +61,7 @@ export default function TrackPlayerComponent({
           backgroundColor: 'pink',
         }}>
         <Image
-          source={require('../assets/images/black-woman-face.jpeg')}
+          source={{uri: selectedMusic?.artwork}}
           style={{
             width: 250,
             height: 250,
@@ -177,16 +150,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: 'orange',
     opacity: 0.8,
-    // marginHorizontal: 20,
-    // marginBottom: 12,
-    // marginTop: 1,
   },
-  //   linearGradient: {
-  //     width: '100%',
-  //     height: 250,
-  //     justifyContent: 'center',
-  //     alignItems: 'center',
-  //   },
+
   iconWidth: {
     width: 30,
     height: 30,
@@ -200,7 +165,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     flexDirection: 'row',
     alignItems: 'center',
-    // marginTop: 10,
     paddingTop: 18,
     paddingHorizontal: 24,
   },

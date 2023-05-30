@@ -81,3 +81,56 @@ export const musiclibrary = [
     duration: 177, // Duration in seconds
   },
 ];
+
+export const podcastLib = [
+  {
+    url: 'https://www.bensound.com/bensound-music/bensound-dance.mp3',
+    title: 'Love',
+    artist: 'John Doe',
+    album: "Bensound's Electronica",
+    genre: 'Electronica',
+    date: '2014-05-20T07:00:00+00:00', // RFC 3339
+    artwork: 'https://www.bensound.com/bensound-img/dance.jpg',
+    duration: 177, // Duration in seconds
+  },
+  {
+    url: 'https://www.bensound.com/bensound-music/bensound-love.mp3',
+    title: 'Love',
+    artist: 'Jane Dopamine',
+    album: "Bensound's Jazz",
+    genre: 'Jazz',
+    date: '2014-05-20T07:00:00+00:00', // RFC 3339
+    artwork: 'https://www.bensound.com/bensound-img/love.jpg',
+    duration: 335, // Duration in seconds
+  },
+  {
+    url: 'https://www.bensound.com/bensound-music/bensound-dreams.mp3',
+    title: 'Dreams',
+    artist: 'Jamin Tsst',
+    album: "Bensound's Electronica",
+    genre: 'Electronica',
+    date: '2014-05-20T07:00:00+00:00', // RFC 3339
+    artwork: 'https://www.bensound.com/bensound-img/dreams.jpg',
+    duration: 310, // Duration in seconds
+  },
+  {
+    url: 'https://www.bensound.com/bensound-music/bensound-romantic.mp3',
+    title: 'Romantic',
+    artist: 'Prick Demi',
+    album: "Bensound's Jazz",
+    genre: 'Jazz',
+    date: '2014-05-20T07:00:00+00:00', // RFC 3339
+    artwork: 'https://www.bensound.com/bensound-img/romantic.jpg',
+    duration: 236, // Duration in seconds
+  },
+  {
+    url: 'https://www.bensound.com/bensound-music/bensound-allthat.mp3',
+    title: 'All That',
+    artist: 'Ben Amin',
+    album: "Bensound's Jazz",
+    genre: 'Jazz',
+    date: '2014-05-20T07:00:00+00:00', // RFC 3339
+    artwork: 'https://www.bensound.com/bensound-img/allthat.jpg',
+    duration: 146, // Duration in seconds
+  },
+];

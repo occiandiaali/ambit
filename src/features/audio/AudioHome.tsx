@@ -3,14 +3,16 @@ import {
   Dimensions,
   FlatList,
   Image,
+  ImageBackground,
   Pressable,
   ScrollView,
   StyleSheet,
   Text,
   View,
 } from 'react-native';
+import {Menu, MenuOptions, MenuTrigger} from 'react-native-popup-menu';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import {musiclibrary} from '../../../data';
+import {musiclibrary, podcastLib} from '../../../data';
 import TrackPlayerComponent from '../../components/TrackPlayer';
 import SlidingUpPanel from 'rn-sliding-up-panel';
 
@@ -33,6 +35,85 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignSelf: 'flex-start',
   },
+  moreVertMenuOptionContainer: {padding: 12},
+  musiPodDisRowText: {color: '#fff', textAlign: 'center'},
+  popularPlayIconContainer: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    backgroundColor: 'gray',
+
+    position: 'absolute',
+    alignSelf: 'center',
+    top: 24,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  popularRowArtistText: {
+    fontSize: 14,
+    color: 'white',
+    fontWeight: 'bold',
+  },
+  popularRowBgImage: {
+    width: 168,
+    height: 168,
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  popularRowTextsContainer: {
+    height: 100,
+    width: 124,
+    padding: 8,
+    borderRadius: 8,
+    backgroundColor: 'black',
+    opacity: 0.5,
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+  },
+  popularRowTitleText: {
+    fontSize: 18,
+    color: 'yellow',
+    fontWeight: 'bold',
+    paddingTop: 24,
+  },
+  recommendRowArtistText: {
+    fontSize: 14,
+    color: 'white',
+    fontWeight: 'bold',
+  },
+  recommendRowBgImage: {
+    width: 168,
+    height: 168,
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  recommendRowPlayIconContainer: {
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    top: 6,
+    backgroundColor: 'gray',
+    opacity: 0.8,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  recommendRowTextsContainer: {
+    height: 80,
+    width: 120,
+    padding: 8,
+    borderRadius: 8,
+    backgroundColor: 'black',
+    opacity: 0.5,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  recommendRowTitleText: {
+    fontSize: 18,
+    color: 'yellow',
+    fontWeight: 'bold',
+  },
   row1: {
     width: 168,
     height: 168,
@@ -41,12 +122,13 @@ const styles = StyleSheet.create({
     marginTop: 24,
     marginBottom: 28,
     marginRight: 6,
-    backgroundColor: 'orange',
+    backgroundColor: 'grey',
     borderRadius: 14,
   },
   rowRecommended: {
     marginTop: 8,
   },
+  rowHeaderContainer: {flexDirection: 'row', justifyContent: 'space-between'},
   sectionLabel: {
     fontSize: 18,
     marginTop: 20,
@@ -54,6 +136,9 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
     paddingLeft: 16,
   },
+  seeAllText: {right: 16, top: 24, fontSize: 14},
+  slidingPanelAvatar: {width: 80, height: 80},
+  slidingPanelTextContainer: {right: 54},
   topRow: {
     width: 200,
     height: 200,
@@ -62,8 +147,15 @@ const styles = StyleSheet.create({
     marginTop: 24,
     marginBottom: 28,
     marginRight: 6,
-    backgroundColor: 'green',
+    backgroundColor: 'grey',
+    // opacity: 0.4,
     borderRadius: 14,
+  },
+  topRowBgImage: {
+    width: 200,
+    height: 200,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   widgetArtisteTitle: {
     fontSize: 14,
@@ -101,22 +193,27 @@ const DATA = [
   {
     id: 1,
     label: 'ONE',
+    img: 'https://www.bensound.com/bensound-img/happyrock.jpg',
   },
   {
     id: 2,
     label: 'TWO',
+    img: 'https://www.bensound.com/bensound-img/punky.jpg',
   },
   {
     id: 3,
     label: 'THREE',
+    img: 'https://www.bensound.com/bensound-img/happyrock.jpg',
   },
   {
     id: 4,
     label: 'FOUR',
+    img: 'https://www.bensound.com/bensound-img/punky.jpg',
   },
   {
     id: 5,
     label: 'FIVE',
+    img: 'https://www.bensound.com/bensound-img/punky.jpg',
   },
 ];
 
@@ -134,12 +231,10 @@ const AudioHome = () => {
   const [mode, setMode] = useState('shuffle');
 
   const slideUpRef = useRef<SlidingUpPanel>(null);
-  const snapPoints = useMemo(() => [200, 400, 650], []);
+  const snapPoints = useMemo(() => [200, 400, windowHeight], []);
 
   const openUp = () => {
-    // slideUpRef.current?.show(snapPoints[0]);
     slideUpRef.current?.show({toValue: snapPoints[0], velocity: 0.2});
-    //  slideUpRef.current?.scrollIntoView(snapPoints[0]);
   };
 
   const onSelectTrack = async (selectedTrack, index) => {
@@ -153,7 +248,8 @@ const AudioHome = () => {
 
   const playOrPause = async () => setIsPlaying(!isPlaying);
 
-  const onSeekTrack = newTimeStamp => setTimestamp(newTimeStamp);
+  const onSeekTrack = (newTimeStamp: React.SetStateAction<number>) =>
+    setTimestamp(newTimeStamp);
 
   const onPressNext = () => {
     setTimestamp(0);
@@ -210,29 +306,49 @@ const AudioHome = () => {
           data={DATA}
           renderItem={({item}) => (
             <View style={styles.topRow}>
-              <Text>{item.label}</Text>
+              <ImageBackground
+                resizeMode={'cover'}
+                style={styles.topRowBgImage}
+                source={{uri: item.img}}>
+                <Text>{item.label}</Text>
+              </ImageBackground>
             </View>
           )}
           keyExtractor={item => item.id.toString()}
         />
         <View style={styles.catRow}>
           <View style={styles.catext}>
-            <Text style={{color: '#fff', textAlign: 'center'}}>Music</Text>
+            <Text style={styles.musiPodDisRowText}>Music</Text>
           </View>
           <View style={styles.catext}>
-            <Text style={{color: '#fff', textAlign: 'center'}}>Podcasts</Text>
+            <Text style={styles.musiPodDisRowText}>Podcasts</Text>
           </View>
           <View style={styles.catext}>
-            <Text style={{color: '#fff', textAlign: 'center'}}>Discover</Text>
+            <Text style={styles.musiPodDisRowText}>Discover</Text>
           </View>
           <View style={{top: 6, left: 18}}>
-            <MaterialIcons name="more-vert" size={24} />
+            <Menu>
+              <MenuTrigger>
+                <MaterialIcons name="more-vert" size={24} />
+              </MenuTrigger>
+              <MenuOptions>
+                <View style={styles.moreVertMenuOptionContainer}>
+                  <Text>Option One</Text>
+                </View>
+                <View style={styles.moreVertMenuOptionContainer}>
+                  <Text>Option Two</Text>
+                </View>
+                <View style={styles.moreVertMenuOptionContainer}>
+                  <Text>Option Three</Text>
+                </View>
+              </MenuOptions>
+            </Menu>
           </View>
         </View>
         <View style={styles.rowRecommended}>
-          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+          <View style={styles.rowHeaderContainer}>
             <Text style={styles.sectionLabel}>Popular</Text>
-            <Text style={{right: 16, top: 24, fontSize: 14}}>see all</Text>
+            <Text style={styles.seeAllText}>see all</Text>
           </View>
           <FlatList
             horizontal={true}
@@ -241,8 +357,22 @@ const AudioHome = () => {
             renderItem={({item}) => (
               <Pressable onPress={() => onSelectTrack(item, item.url)}>
                 <View style={styles.row1}>
-                  <Text>{item.title}</Text>
-                  <Text>{item.artist}</Text>
+                  <ImageBackground
+                    source={{uri: item.artwork.trim()}}
+                    resizeMode="cover"
+                    style={styles.popularRowBgImage}>
+                    <View style={styles.popularRowTextsContainer}>
+                      <Text style={styles.popularRowTitleText}>
+                        {item.title}
+                      </Text>
+                      <Text style={styles.popularRowArtistText}>
+                        {item.artist}
+                      </Text>
+                    </View>
+                    <View style={styles.popularPlayIconContainer}>
+                      <MaterialIcons name="play-arrow" size={24} color="#fff" />
+                    </View>
+                  </ImageBackground>
                 </View>
               </Pressable>
             )}
@@ -250,19 +380,36 @@ const AudioHome = () => {
           />
         </View>
         <View style={styles.rowRecommended}>
-          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+          <View style={styles.rowHeaderContainer}>
             <Text style={styles.sectionLabel}>Recommended</Text>
-            <Text style={{right: 16, top: 24, fontSize: 14}}>see all</Text>
+            <Text style={styles.seeAllText}>see all</Text>
           </View>
+
           <FlatList
             horizontal={true}
             showsHorizontalScrollIndicator={false}
-            data={musiclibrary}
+            data={podcastLib}
             renderItem={({item}) => (
-              <View style={[styles.row1, {marginBottom: 120}]}>
-                <Text>{item.artist}</Text>
-                <Text>{item.title}</Text>
-              </View>
+              <Pressable onPress={() => onSelectTrack(item, item.url)}>
+                <View style={[styles.row1, {marginBottom: 120}]}>
+                  <ImageBackground
+                    source={{uri: item.artwork.trim()}}
+                    resizeMode="cover"
+                    style={styles.recommendRowBgImage}>
+                    <View style={styles.recommendRowTextsContainer}>
+                      <Text style={styles.recommendRowTitleText}>
+                        {item.title}
+                      </Text>
+                      <Text style={styles.recommendRowArtistText}>
+                        {item.artist}
+                      </Text>
+                    </View>
+                    <View style={styles.recommendRowPlayIconContainer}>
+                      <MaterialIcons name="play-arrow" size={24} color="#fff" />
+                    </View>
+                  </ImageBackground>
+                </View>
+              </Pressable>
             )}
             keyExtractor={item => item.url}
           />
@@ -274,32 +421,24 @@ const AudioHome = () => {
         draggableRange={{top: windowHeight * 0.8, bottom: 0}}
         snappingPoints={snapPoints}
         height={windowHeight * 0.8}
-        showBackdrop={false}
-        containerStyle={{
-          borderTopRightRadius: 24,
-          borderTopLeftRadius: 24,
-        }}>
+        showBackdrop={false}>
         <>
           {selectedMusic ? (
             <Pressable onPress={() => setIsPlayerModalVisible(true)}>
               <View style={[styles.widgetContainer, {}]}>
-                <View style={{flexDirection: 'row'}}>
-                  {/* <View
-                    style={{width: 80, height: 80, backgroundColor: 'gray'}}
-                  /> */}
-                  <Image
-                    style={{width: 80, height: 80}}
-                    source={require('../../assets/images/black-woman-face.jpeg')}
-                  />
-                  <View>
-                    <Text style={styles.widgetMusicTitle}>
-                      {selectedMusic?.title}
-                    </Text>
-                    <Text style={styles.widgetArtisteTitle}>
-                      {selectedMusic?.artist}
-                    </Text>
-                  </View>
+                <Image
+                  style={styles.slidingPanelAvatar}
+                  source={{uri: selectedMusic?.artwork}}
+                />
+                <View style={styles.slidingPanelTextContainer}>
+                  <Text style={styles.widgetMusicTitle}>
+                    {selectedMusic?.title}
+                  </Text>
+                  <Text style={styles.widgetArtisteTitle}>
+                    {selectedMusic?.artist}
+                  </Text>
                 </View>
+
                 <Pressable onPress={() => playOrPause()}>
                   {isPlaying ? <Pause /> : <Play />}
                 </Pressable>
