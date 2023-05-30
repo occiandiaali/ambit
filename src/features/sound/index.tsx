@@ -1,5 +1,6 @@
-import React, {useState} from 'react';
+import React, {useMemo, useRef, useState} from 'react';
 import {
+  Dimensions,
   FlatList,
   Image,
   Pressable,
@@ -11,6 +12,7 @@ import {
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {musiclibrary} from '../../../data';
 import TrackPlayerComponent from '../../components/TrackPlayer';
+import SlidingUpPanel from 'rn-sliding-up-panel';
 
 const styles = StyleSheet.create({
   catext: {
@@ -75,11 +77,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 0,
-    height: 80,
+    paddingHorizontal: 12,
+    height: 100,
     width: '100%',
     backgroundColor: '#5E5A5A',
-    zIndex: 99,
   },
   widgetImageStyle: {
     width: 55,
@@ -122,6 +123,8 @@ const DATA = [
 const Play = () => <MaterialIcons name="play-arrow" size={24} />;
 const Pause = () => <MaterialIcons name="pause" size={24} />;
 
+const windowHeight = Dimensions.get('window').height;
+
 const SoundScreen = () => {
   const [selectedMusic, setSelectedMusic] = useState(null);
   const [selectedMusicIndex, setSelectedMusicIndex] = useState(0);
@@ -130,10 +133,22 @@ const SoundScreen = () => {
   const [timeStamp, setTimestamp] = useState(0);
   const [mode, setMode] = useState('shuffle');
 
+  const slideUpRef = useRef<SlidingUpPanel>(null);
+  const snapPoints = useMemo(() => [200, 400, 650], []);
+
+  const openUp = () => {
+    // slideUpRef.current?.show(snapPoints[0]);
+    slideUpRef.current?.show({toValue: snapPoints[0], velocity: 0.2});
+    //  slideUpRef.current?.scrollIntoView(snapPoints[0]);
+  };
+
   const onSelectTrack = async (selectedTrack, index) => {
+    openUp();
     setSelectedMusic(selectedTrack);
     setTimestamp(0);
     setSelectedMusicIndex(index);
+    console.log(`SelectedIndex: ${selectedMusicIndex}`);
+    console.log(`SelectedMusic: ${selectedTrack}`);
   };
 
   const playOrPause = async () => setIsPlaying(!isPlaying);
@@ -253,30 +268,46 @@ const SoundScreen = () => {
           />
         </View>
       </ScrollView>
-      {selectedMusic ? (
-        <Pressable onPress={() => setIsPlayerModalVisible(true)}>
-          <View style={[styles.widgetContainer, {}]}>
-            <View style={{flexDirection: 'row'}}>
-              <Image
-                resizeMode="cover"
-                source={{uri: selectedMusic?.artwork}}
-                style={styles.widgetImageStyle}
-              />
-              <View>
-                <Text style={styles.widgetMusicTitle}>
-                  {selectedMusic?.title}
-                </Text>
-                <Text style={styles.widgetArtisteTitle}>
-                  {selectedMusic?.artist}
-                </Text>
+
+      <SlidingUpPanel
+        ref={slideUpRef}
+        draggableRange={{top: windowHeight * 0.8, bottom: 0}}
+        snappingPoints={snapPoints}
+        height={windowHeight * 0.8}
+        showBackdrop={false}
+        containerStyle={{
+          borderTopRightRadius: 24,
+          borderTopLeftRadius: 24,
+        }}>
+        <>
+          {selectedMusic ? (
+            <Pressable onPress={() => setIsPlayerModalVisible(true)}>
+              <View style={[styles.widgetContainer, {}]}>
+                <View style={{flexDirection: 'row'}}>
+                  {/* <View
+                    style={{width: 80, height: 80, backgroundColor: 'gray'}}
+                  /> */}
+                  <Image
+                    style={{width: 80, height: 80}}
+                    source={require('../../assets/images/black-woman-face.jpeg')}
+                  />
+                  <View>
+                    <Text style={styles.widgetMusicTitle}>
+                      {selectedMusic?.title}
+                    </Text>
+                    <Text style={styles.widgetArtisteTitle}>
+                      {selectedMusic?.artist}
+                    </Text>
+                  </View>
+                </View>
+                <Pressable onPress={() => playOrPause()}>
+                  {isPlaying ? <Pause /> : <Play />}
+                </Pressable>
               </View>
-            </View>
-            <Pressable onPress={() => playOrPause()}>
-              {isPlaying ? <Pause /> : <Play />}
             </Pressable>
-          </View>
-        </Pressable>
-      ) : null}
+          ) : null}
+        </>
+      </SlidingUpPanel>
     </View>
   );
 };
