@@ -10,6 +10,8 @@ import {
 } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import LinearGradient from 'react-native-linear-gradient';
+import 'react-native-get-random-values';
+import {v4 as uuid} from 'uuid';
 
 const styles = StyleSheet.create({
   container: {
@@ -93,9 +95,13 @@ const styles = StyleSheet.create({
 
 const VideoHome = ({navigation}) => {
   const [modalVisible, setModalVisible] = useState(false);
+  const [link, setLink] = useState('');
 
   const twoButtonAlert = () => {
-    Alert.alert('Select action', 'Choose what you want to do', [
+    // generate random string
+    const id = Math.random().toString(36).substring(2, 16);
+    setLink(id);
+    Alert.alert('Copy Link to Share', `${link}`, [
       {
         text: 'Cancel',
         onPress: () => setModalVisible(false),
@@ -103,9 +109,15 @@ const VideoHome = ({navigation}) => {
       },
       {
         text: 'OK',
-        onPress: () => setModalVisible(false),
+        onPress: () => {
+          setModalVisible(false);
+        },
       },
     ]);
+  };
+
+  const createLive = () => {
+    // navigation.navigate('LiveScreen', {type: 'create', channel: link});
   };
 
   return (
@@ -119,7 +131,7 @@ const VideoHome = ({navigation}) => {
           <View style={styles.modalView}>
             <View style={styles.linkContainer}>
               <MaterialCommunityIcons name="link" size={24} />
-              <Pressable onPress={() => twoButtonAlert()}>
+              <Pressable onPress={twoButtonAlert}>
                 <Text style={styles.infoSubText}>
                   Get a streaming link to share
                 </Text>
@@ -128,7 +140,7 @@ const VideoHome = ({navigation}) => {
 
             <View style={styles.linkContainer}>
               <MaterialCommunityIcons name="video-wireless-outline" size={24} />
-              <Pressable onPress={() => twoButtonAlert()}>
+              <Pressable onPress={createLive}>
                 <Text style={[styles.infoSubText, {right: 52}]}>
                   Start a stream
                 </Text>

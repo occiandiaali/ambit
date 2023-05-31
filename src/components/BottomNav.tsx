@@ -7,6 +7,7 @@ import AudioHome from '../features/audio/AudioHome';
 import VideoHome from '../features/video/VideoHome';
 import AccountHome from '../features/account/AccountHome';
 import JoinStreamForm from '../features/video/JoinStreamForm';
+import LiveScreen from '../features/video/LiveScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -32,6 +33,7 @@ function VideoStack() {
         component={VideoHome}
       />
       <Stack.Screen name="Join Stream" component={JoinStreamForm} />
+      <Stack.Screen name="LiveScreen" component={LiveScreen} />
     </Stack.Navigator>
   );
 }
