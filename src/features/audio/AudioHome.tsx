@@ -15,6 +15,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {musiclibrary, podcastLib} from '../../../data';
 import TrackPlayerComponent from '../../components/TrackPlayer';
 import SlidingUpPanel from 'rn-sliding-up-panel';
+import LinearGradient from 'react-native-linear-gradient';
 
 const styles = StyleSheet.create({
   catext: {
@@ -284,170 +285,188 @@ const AudioHome = () => {
   // }
 
   return (
-    <View style={styles.container}>
-      <TrackPlayerComponent
-        onCloseModal={() => setIsPlayerModalVisible(false)}
-        isVisible={isPlayerModalVisible}
-        isPlaying={isPlaying}
-        playOrPause={playOrPause}
-        selectedMusic={selectedMusic}
-        onSeekTrack={onSeekTrack}
-        timestamp={timeStamp}
-        onPressNext={onPressNext}
-        onPressPrev={onPressPrev}
-        playbackMode={mode}
-        onClickShuffle={null}
-        onClickLoop={() => (mode === 'loop' ? setMode('loop') : setMode('off'))}
-      />
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <FlatList
-          horizontal={true}
-          showsHorizontalScrollIndicator={false}
-          data={DATA}
-          renderItem={({item}) => (
-            <View style={styles.topRow}>
-              <ImageBackground
-                resizeMode={'cover'}
-                style={styles.topRowBgImage}
-                source={{uri: item.img}}>
-                <Text>{item.label}</Text>
-              </ImageBackground>
-            </View>
-          )}
-          keyExtractor={item => item.id.toString()}
+    <LinearGradient
+      colors={['#f0decc', '#f0b271', '#dd7508']}
+      style={{
+        flex: 1,
+      }}>
+      <View style={styles.container}>
+        <TrackPlayerComponent
+          onCloseModal={() => setIsPlayerModalVisible(false)}
+          isVisible={isPlayerModalVisible}
+          isPlaying={isPlaying}
+          playOrPause={playOrPause}
+          selectedMusic={selectedMusic}
+          onSeekTrack={onSeekTrack}
+          timestamp={timeStamp}
+          onPressNext={onPressNext}
+          onPressPrev={onPressPrev}
+          playbackMode={mode}
+          onClickShuffle={null}
+          onClickLoop={() =>
+            mode === 'loop' ? setMode('loop') : setMode('off')
+          }
         />
-        <View style={styles.catRow}>
-          <View style={styles.catext}>
-            <Text style={styles.musiPodDisRowText}>Music</Text>
-          </View>
-          <View style={styles.catext}>
-            <Text style={styles.musiPodDisRowText}>Podcasts</Text>
-          </View>
-          <View style={styles.catext}>
-            <Text style={styles.musiPodDisRowText}>Discover</Text>
-          </View>
-          <View style={{top: 6, left: 18}}>
-            <Menu>
-              <MenuTrigger>
-                <MaterialIcons name="more-vert" size={24} />
-              </MenuTrigger>
-              <MenuOptions>
-                <View style={styles.moreVertMenuOptionContainer}>
-                  <Text>Option One</Text>
-                </View>
-                <View style={styles.moreVertMenuOptionContainer}>
-                  <Text>Option Two</Text>
-                </View>
-                <View style={styles.moreVertMenuOptionContainer}>
-                  <Text>Option Three</Text>
-                </View>
-              </MenuOptions>
-            </Menu>
-          </View>
-        </View>
-        <View style={styles.rowRecommended}>
-          <View style={styles.rowHeaderContainer}>
-            <Text style={styles.sectionLabel}>Popular</Text>
-            <Text style={styles.seeAllText}>see all</Text>
-          </View>
+        <ScrollView showsVerticalScrollIndicator={false}>
           <FlatList
             horizontal={true}
             showsHorizontalScrollIndicator={false}
-            data={musiclibrary}
+            data={DATA}
             renderItem={({item}) => (
-              <Pressable onPress={() => onSelectTrack(item, item.url)}>
-                <View style={styles.row1}>
-                  <ImageBackground
-                    source={{uri: item.artwork.trim()}}
-                    resizeMode="cover"
-                    style={styles.popularRowBgImage}>
-                    <View style={styles.popularRowTextsContainer}>
-                      <Text style={styles.popularRowTitleText}>
-                        {item.title}
-                      </Text>
-                      <Text style={styles.popularRowArtistText}>
-                        {item.artist}
-                      </Text>
-                    </View>
-                    <View style={styles.popularPlayIconContainer}>
-                      <MaterialIcons name="play-arrow" size={24} color="#fff" />
-                    </View>
-                  </ImageBackground>
-                </View>
-              </Pressable>
-            )}
-            keyExtractor={item => item.url}
-          />
-        </View>
-        <View style={styles.rowRecommended}>
-          <View style={styles.rowHeaderContainer}>
-            <Text style={styles.sectionLabel}>Recommended</Text>
-            <Text style={styles.seeAllText}>see all</Text>
-          </View>
-
-          <FlatList
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
-            data={podcastLib}
-            renderItem={({item}) => (
-              <Pressable onPress={() => onSelectTrack(item, item.url)}>
-                <View style={[styles.row1, {marginBottom: 120}]}>
-                  <ImageBackground
-                    source={{uri: item.artwork.trim()}}
-                    resizeMode="cover"
-                    style={styles.recommendRowBgImage}>
-                    <View style={styles.recommendRowTextsContainer}>
-                      <Text style={styles.recommendRowTitleText}>
-                        {item.title}
-                      </Text>
-                      <Text style={styles.recommendRowArtistText}>
-                        {item.artist}
-                      </Text>
-                    </View>
-                    <View style={styles.recommendRowPlayIconContainer}>
-                      <MaterialIcons name="play-arrow" size={24} color="#fff" />
-                    </View>
-                  </ImageBackground>
-                </View>
-              </Pressable>
-            )}
-            keyExtractor={item => item.url}
-          />
-        </View>
-      </ScrollView>
-
-      <SlidingUpPanel
-        ref={slideUpRef}
-        draggableRange={{top: windowHeight * 0.8, bottom: 0}}
-        snappingPoints={snapPoints}
-        height={windowHeight * 0.8}
-        showBackdrop={false}>
-        <>
-          {selectedMusic ? (
-            <Pressable onPress={() => setIsPlayerModalVisible(true)}>
-              <View style={[styles.widgetContainer, {}]}>
-                <Image
-                  style={styles.slidingPanelAvatar}
-                  source={{uri: selectedMusic?.artwork}}
-                />
-                <View style={styles.slidingPanelTextContainer}>
-                  <Text style={styles.widgetMusicTitle}>
-                    {selectedMusic?.title}
-                  </Text>
-                  <Text style={styles.widgetArtisteTitle}>
-                    {selectedMusic?.artist}
-                  </Text>
-                </View>
-
-                <Pressable onPress={() => playOrPause()}>
-                  {isPlaying ? <Pause /> : <Play />}
-                </Pressable>
+              <View style={styles.topRow}>
+                <ImageBackground
+                  resizeMode={'cover'}
+                  style={styles.topRowBgImage}
+                  source={{uri: item.img}}>
+                  <Text>{item.label}</Text>
+                </ImageBackground>
               </View>
-            </Pressable>
-          ) : null}
-        </>
-      </SlidingUpPanel>
-    </View>
+            )}
+            keyExtractor={item => item.id.toString()}
+          />
+          <View style={styles.catRow}>
+            <View style={styles.catext}>
+              <Text style={styles.musiPodDisRowText}>Music</Text>
+            </View>
+            <View
+              style={[styles.catext, {backgroundColor: 'grey', opacity: 0.4}]}>
+              <Text style={styles.musiPodDisRowText}>Podcasts</Text>
+            </View>
+            <View
+              style={[styles.catext, {backgroundColor: 'grey', opacity: 0.4}]}>
+              <Text style={styles.musiPodDisRowText}>Discover</Text>
+            </View>
+            <View style={{top: 6, left: 18}}>
+              <Menu>
+                <MenuTrigger>
+                  <MaterialIcons name="more-vert" size={24} />
+                </MenuTrigger>
+                <MenuOptions>
+                  <View style={styles.moreVertMenuOptionContainer}>
+                    <Text>Option One</Text>
+                  </View>
+                  <View style={styles.moreVertMenuOptionContainer}>
+                    <Text>Option Two</Text>
+                  </View>
+                  <View style={styles.moreVertMenuOptionContainer}>
+                    <Text>Option Three</Text>
+                  </View>
+                </MenuOptions>
+              </Menu>
+            </View>
+          </View>
+          <View style={styles.rowRecommended}>
+            <View style={styles.rowHeaderContainer}>
+              <Text style={styles.sectionLabel}>Popular</Text>
+              <Text style={styles.seeAllText}>see all</Text>
+            </View>
+            <FlatList
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+              data={musiclibrary}
+              renderItem={({item}) => (
+                <Pressable onPress={() => onSelectTrack(item, item.url)}>
+                  <View style={styles.row1}>
+                    <ImageBackground
+                      source={{uri: item.artwork.trim()}}
+                      resizeMode="cover"
+                      style={styles.popularRowBgImage}>
+                      <View style={styles.popularRowTextsContainer}>
+                        <Text style={styles.popularRowTitleText}>
+                          {item.title}
+                        </Text>
+                        <Text style={styles.popularRowArtistText}>
+                          {item.artist}
+                        </Text>
+                      </View>
+                      <View style={styles.popularPlayIconContainer}>
+                        <MaterialIcons
+                          name="play-arrow"
+                          size={24}
+                          color="#fff"
+                        />
+                      </View>
+                    </ImageBackground>
+                  </View>
+                </Pressable>
+              )}
+              keyExtractor={item => item.url}
+            />
+          </View>
+          <View style={styles.rowRecommended}>
+            <View style={styles.rowHeaderContainer}>
+              <Text style={styles.sectionLabel}>Recommended</Text>
+              <Text style={styles.seeAllText}>see all</Text>
+            </View>
+
+            <FlatList
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+              data={podcastLib}
+              renderItem={({item}) => (
+                <Pressable onPress={() => onSelectTrack(item, item.url)}>
+                  <View style={[styles.row1, {marginBottom: 120}]}>
+                    <ImageBackground
+                      source={{uri: item.artwork.trim()}}
+                      resizeMode="cover"
+                      style={styles.recommendRowBgImage}>
+                      <View style={styles.recommendRowTextsContainer}>
+                        <Text style={styles.recommendRowTitleText}>
+                          {item.title}
+                        </Text>
+                        <Text style={styles.recommendRowArtistText}>
+                          {item.artist}
+                        </Text>
+                      </View>
+                      <View style={styles.recommendRowPlayIconContainer}>
+                        <MaterialIcons
+                          name="play-arrow"
+                          size={24}
+                          color="#fff"
+                        />
+                      </View>
+                    </ImageBackground>
+                  </View>
+                </Pressable>
+              )}
+              keyExtractor={item => item.url}
+            />
+          </View>
+        </ScrollView>
+
+        <SlidingUpPanel
+          ref={slideUpRef}
+          draggableRange={{top: windowHeight * 0.8, bottom: 0}}
+          snappingPoints={snapPoints}
+          height={windowHeight * 0.8}
+          showBackdrop={false}>
+          <>
+            {selectedMusic ? (
+              <Pressable onPress={() => setIsPlayerModalVisible(true)}>
+                <View style={[styles.widgetContainer, {}]}>
+                  <Image
+                    style={styles.slidingPanelAvatar}
+                    source={{uri: selectedMusic?.artwork}}
+                  />
+                  <View style={styles.slidingPanelTextContainer}>
+                    <Text style={styles.widgetMusicTitle}>
+                      {selectedMusic?.title}
+                    </Text>
+                    <Text style={styles.widgetArtisteTitle}>
+                      {selectedMusic?.artist}
+                    </Text>
+                  </View>
+
+                  <Pressable onPress={() => playOrPause()}>
+                    {isPlaying ? <Pause /> : <Play />}
+                  </Pressable>
+                </View>
+              </Pressable>
+            ) : null}
+          </>
+        </SlidingUpPanel>
+      </View>
+    </LinearGradient>
   );
 };
 
