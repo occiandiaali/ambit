@@ -6,6 +6,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import AudioHome from '../features/audio/AudioHome';
 import VideoHome from '../features/video/VideoHome';
 import AccountHome from '../features/account/AccountHome';
+import JoinStreamForm from '../features/video/JoinStreamForm';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -30,6 +31,7 @@ function VideoStack() {
         options={{headerShown: false}}
         component={VideoHome}
       />
+      <Stack.Screen name="Join Stream" component={JoinStreamForm} />
     </Stack.Navigator>
   );
 }
