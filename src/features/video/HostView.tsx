@@ -1,88 +1,97 @@
-import {StyleSheet, Text, TouchableWithoutFeedback, View} from 'react-native';
-import React, {useState} from 'react';
 import {
-  MediaStream,
-  RTCView,
-  useMeeting,
-  useParticipant,
-} from '@videosdk.live/react-native-sdk';
+  Alert,
+  Clipboard,
+  Dimensions,
+  StyleSheet,
+  Text,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
+import React, {useState} from 'react';
+
 import {SafeAreaView} from 'react-native-safe-area-context';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const HostView = ({participantId}) => {
-  const {toggleWebcam, toggleMic, startHls, stopHls, hlsState} = useMeeting({});
-  const {webcamOn, webcamStream} = useParticipant(participantId);
-  const mStream = new MediaStream([webcamStream.track]).toURL();
+const windowHeight = Dimensions.get('window').height;
+
+const HostView = ({castId, name}) => {
+  // const {toggleWebcam, toggleMic, startHls, stopHls, hlsState} = useMeeting({});
+  // const {webcamOn, webcamStream} = useParticipant(participantId);
+  // const mStream = new MediaStream([webcamStream.track]).toURL();
 
   const [cam, setCam] = useState(false);
   const [mic, setMic] = useState(false);
   const [cast, setCast] = useState(false);
-
-  const _handleHLS = async () => {
-    if (!hlsState || hlsState === 'HLS_STOPPED') {
-      startHls({
-        layout: {
-          type: 'SPOTLIGHT',
-          priority: 'PIN',
-          gridSize: 2,
-        },
-        theme: 'DARK',
-        orientation: 'portrait',
-      });
-    } else if (hlsState === 'HLS_STARTED' || hlsState === 'HLS_PLAYABLE') {
-      stopHls();
-    }
-  };
+  const [valid, setValid] = useState(true);
 
   return (
     <SafeAreaView>
-      {webcamOn && webcamStream ? (
-        <RTCView
-          streamURL={mStream}
-          objectFit={'cover'}
+      {valid ? (
+        <View
           style={{
-            height: 600,
-            marginVertical: 8,
-            marginHorizontal: 8,
-          }}
-        />
+            width: '100%',
+            height: windowHeight - 24,
+            backgroundColor: 'pink',
+          }}>
+          <View style={styles.floatingHeader}>
+            <TouchableWithoutFeedback
+              onPress={() => {
+                Clipboard.setString(castId);
+                Alert.alert('Copied Stream ID', `${castId}`);
+              }}>
+              <View
+                style={{flexDirection: 'row', justifyContent: 'space-around'}}>
+                <Text style={{fontSize: 16, fontWeight: '400'}}>
+                  {castId ?? 'Meeting ID'}
+                </Text>
+                <MaterialCommunityIcons name="share-outline" size={24} />
+              </View>
+            </TouchableWithoutFeedback>
+            <Text style={{fontSize: 18, fontWeight: '700'}}>
+              Hi, {name ?? 'Unknown'}
+            </Text>
+            <TouchableWithoutFeedback onPress={() => null}>
+              <MaterialCommunityIcons name="exit-to-app" size={24} />
+            </TouchableWithoutFeedback>
+          </View>
+          <View style={styles.controlsWrapper}>
+            <TouchableWithoutFeedback
+              onPress={() => {
+                setMic(prev => !prev);
+              }}>
+              <MaterialCommunityIcons
+                style={{padding: 34}}
+                name={mic === false ? 'microphone-off' : 'microphone'}
+                size={48}
+              />
+            </TouchableWithoutFeedback>
+            <TouchableWithoutFeedback
+              onPress={() => {
+                setCam(prev => !prev);
+              }}>
+              <MaterialCommunityIcons
+                style={{padding: 34}}
+                name={cam === false ? 'webcam-off' : 'webcam'}
+                size={48}
+              />
+            </TouchableWithoutFeedback>
+            <TouchableWithoutFeedback
+              onPress={() => {
+                setCast(prev => !prev);
+              }}>
+              <MaterialCommunityIcons
+                style={{padding: 34}}
+                name={cast === false ? 'broadcast-off' : 'broadcast'}
+                size={48}
+              />
+            </TouchableWithoutFeedback>
+          </View>
+        </View>
       ) : (
         <View style={styles.container}>
           <Text>NO MEDIUM</Text>
         </View>
       )}
-      <View style={styles.controlsWrapper}>
-        <TouchableWithoutFeedback
-          onPress={() => {
-            setMic(prev => !prev);
-            toggleMic();
-          }}>
-          <MaterialCommunityIcons
-            name={mic === false ? 'microphone-off' : 'microphone'}
-            size={24}
-          />
-        </TouchableWithoutFeedback>
-        <TouchableWithoutFeedback
-          onPress={() => {
-            setCam(prev => !prev);
-            toggleWebcam();
-          }}>
-          <MaterialCommunityIcons
-            name={cam === false ? 'webcam-off' : 'webcam'}
-            size={24}
-          />
-        </TouchableWithoutFeedback>
-        <TouchableWithoutFeedback
-          onPress={() => {
-            setCast(prev => !prev);
-            _handleHLS();
-          }}>
-          <MaterialCommunityIcons
-            name={cast === false ? 'broadcast-off' : 'broadcast'}
-            size={24}
-          />
-        </TouchableWithoutFeedback>
-      </View>
     </SafeAreaView>
   );
 };
@@ -97,7 +106,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   controlsWrapper: {
+    position: 'absolute',
+    flexDirection: 'row',
+    left: 10,
+    bottom: 32,
+  },
+  floatingHeader: {
     flexDirection: 'row',
     justifyContent: 'space-around',
+    alignItems: 'stretch',
+    top: '10%',
   },
 });

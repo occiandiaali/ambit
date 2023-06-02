@@ -33,7 +33,8 @@ const styles = StyleSheet.create({
   },
   modalView: {
     margin: 20,
-    height: windowHeight * 0.25,
+    height: windowHeight * 0.75,
+    // width: '90%',
     backgroundColor: 'white',
     borderRadius: 20,
     padding: 35,
@@ -49,85 +50,27 @@ const styles = StyleSheet.create({
   },
 });
 
-// ===================================
-
+// ================================
 {
-  /* <InputFieldModal
-animType={'slide'}
-visibility={modalVisible}
-closeModal={() => setModalVisible(false)}
-children={
-  <>
-    <View style={styles.contentWrapper}>
-      <Text>Enter the LiveStream ID you received from the Host</Text>
-      <TextInput
-        style={styles.input}
-        onChangeText={setJoinChannel}
-        value={joinChannel}
-        placeholder="XXX-XXXX-XXXX"
-        placeholderTextColor={'#948b8b'}
-      />
-      <Pressable
-        disabled={joinChannel.length < 5}
-        onPress={() => {
-          setMode('VIEWER');
-          getStreamToken(joinChannel);
-        }}
-        style={[
-          styles.joinPresser,
-          {
-            backgroundColor:
-              joinChannel.length < 5 ? '#e7e4e4' : 'orange',
-          },
-        ]}>
-        <MaterialCommunityIcons name="video-outline" size={24} />
-        <Text style={{fontSize: 18, paddingLeft: 6}}>
-          Join as Guest
-        </Text>
-      </Pressable>
+  /* <Modal animationType="slide" transparent={true} visible={modalVisible}>
+          <View style={styles.modalView}>
+            <View style={styles.linkContainer}>
+              <MaterialCommunityIcons name="link" size={24} />
+              <Pressable onPress={twoButtonAlert}>
+                <Text style={styles.infoSubText}>
+                  Get a streaming link to share
+                </Text>
+              </Pressable>
+            </View>
 
-      <Pressable
-        disabled={joinChannel.length < 5}
-        onPress={() => {
-          setMode('VIEWER');
-          getStreamToken(joinChannel);
-        }}
-        style={[
-          styles.joinPresser,
-          {
-            backgroundColor:
-              joinChannel.length < 5 ? '#e7e4e4' : 'orange',
-            marginTop: 8,
-          },
-        ]}>
-        <MaterialCommunityIcons name="video-outline" size={24} />
-        <Text style={{fontSize: 18, paddingLeft: 6}}>
-          Join as Host
-        </Text>
-      </Pressable>
-      <Text
-        style={{
-          alignSelf: 'center',
-          fontSize: 18,
-          marginVertical: 16,
-          fontStyle: 'italic',
-          color: 'grey',
-        }}>
-        ---------- OR ----------
-      </Text>
-      <View style={styles.linkContainer}>
-        <MaterialCommunityIcons
-          name="video-wireless-outline"
-          size={24}
-        />
-        <Pressable onPress={twoButtonAlert}>
-          <Text style={[styles.infoSubText, {right: 14, top: 4}]}>
-            Start a premium stream
-          </Text>
-        </Pressable>
-      </View>
-    </View>
-  </>
-}
-/> */
+            <View style={styles.linkContainer}>
+              <MaterialCommunityIcons name="video-wireless-outline" size={24} />
+              <Pressable onPress={twoButtonAlert}>
+                <Text style={[styles.infoSubText, {right: 52}]}>
+                  Start a stream
+                </Text>
+              </Pressable>
+            </View>
+          </View>
+        </Modal> */
 }
