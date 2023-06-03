@@ -1,6 +1,5 @@
 import {
   Alert,
-  Clipboard,
   Dimensions,
   StyleSheet,
   Text,
@@ -8,7 +7,7 @@ import {
   View,
 } from 'react-native';
 import React, {useState} from 'react';
-
+import Clipboard from '@react-native-community/clipboard';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -30,7 +29,7 @@ const HostView = ({castId, name}) => {
         <View
           style={{
             width: '100%',
-            height: windowHeight - 24,
+            height: windowHeight,
             backgroundColor: 'pink',
           }}>
           <View style={styles.floatingHeader}>
@@ -109,12 +108,12 @@ const styles = StyleSheet.create({
     position: 'absolute',
     flexDirection: 'row',
     left: 10,
-    bottom: 32,
+    bottom: -12, //32,
   },
   floatingHeader: {
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'stretch',
-    top: '10%',
+    top: '18%',
   },
 });

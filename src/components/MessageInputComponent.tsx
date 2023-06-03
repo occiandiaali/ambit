@@ -14,10 +14,8 @@ const MessageInputComponent = ({onChangeText, value}) => {
         // placeholderTextColor={'#948b8b'}
         placeholderTextColor={'#fff'}
       />
-      <TouchableWithoutFeedback
-        onPress={() => null}
-        style={{top: 18, left: 12}}>
-        <MaterialCommunityIcons name="send-outline" size={42} />
+      <TouchableWithoutFeedback onPress={() => null} style={{top: 4, left: 18}}>
+        <MaterialCommunityIcons name="send-outline" size={46} />
       </TouchableWithoutFeedback>
     </View>
   );
@@ -35,7 +33,8 @@ const styles = StyleSheet.create({
   input: {
     height: 56,
     width: '90%',
-    margin: 12,
+    marginBottom: 12,
+    marginLeft: 14,
     padding: 10,
     borderWidth: 1,
     borderRadius: 16,

@@ -154,11 +154,6 @@ dependencies {
 
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.0.0")
 
-    // Videosdk live dependencies
-    implementation project(':rnwebrtc')
-    implementation project(':rnincallmanager')
-    implementation project(':rnfgservice')
-
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}")
     debugImplementation("com.facebook.flipper:flipper-network-plugin:${FLIPPER_VERSION}") {
         exclude group:'com.squareup.okhttp3', module:'okhttp'

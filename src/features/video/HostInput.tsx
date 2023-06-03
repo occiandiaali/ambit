@@ -42,7 +42,7 @@ const HostInput = ({
                 fontWeight: '700',
                 textAlign: 'center',
               }}>
-              Let's start a new LiveStream
+              Start a new LiveStream
             </Text>
             <View
               style={{
@@ -51,7 +51,7 @@ const HostInput = ({
                 alignItems: 'center',
                 bottom: 64,
               }}>
-              <Text>Stream ID: {link}</Text>
+              <Text>Channel ID: {link}</Text>
               <TextInput
                 style={styles.input}
                 onChangeText={setUsername}
@@ -77,8 +77,8 @@ const HostInput = ({
                     backgroundColor: username.length < 3 ? '#e7e4e4' : 'orange',
                   },
                 ]}>
-                <MaterialCommunityIcons name="video-outline" size={24} />
-                <Text style={{fontSize: 18, right: 12}}>Create a Session</Text>
+                {/* <MaterialCommunityIcons name="video-outline" size={24} /> */}
+                <Text style={{fontSize: 18, right: 12}}>Create</Text>
               </Pressable>
             </View>
           </>

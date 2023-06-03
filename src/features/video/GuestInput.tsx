@@ -57,7 +57,7 @@ const GuestInput = ({
                 style={styles.input}
                 onChangeText={setGuestLink}
                 value={guestLink}
-                placeholder="Enter stream link"
+                placeholder="Enter Channel ID"
                 placeholderTextColor={'#948b8b'}
               />
               <TextInput

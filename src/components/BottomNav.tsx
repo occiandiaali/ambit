@@ -14,9 +14,9 @@ const Stack = createStackNavigator();
 
 function AudioStack() {
   return (
-    <Stack.Navigator initialRouteName="AudioHome">
+    <Stack.Navigator initialRouteName="audio-home">
       <Stack.Screen
-        name="AudioHome"
+        name="audio-home"
         options={{headerShown: false}}
         component={AudioHome}
       />
@@ -26,9 +26,9 @@ function AudioStack() {
 
 function VideoStack() {
   return (
-    <Stack.Navigator initialRouteName="VideoHome">
+    <Stack.Navigator initialRouteName="video-home">
       <Stack.Screen
-        name="VideoHome"
+        name="video-home"
         options={{headerShown: false}}
         component={VideoHome}
       />
@@ -38,9 +38,9 @@ function VideoStack() {
 
 function AccountStack() {
   return (
-    <Stack.Navigator initialRouteName="AccountHome">
+    <Stack.Navigator initialRouteName="account-home">
       <Stack.Screen
-        name="AccountHome"
+        name="account-home"
         options={{headerShown: false}}
         component={AccountHome}
       />
@@ -73,19 +73,6 @@ function AppTabs() {
           borderBottomRightRadius: 16,
         },
         tabBarLabelStyle: {fontSize: 12},
-        // tabBarIcon: ({color, size}) => {
-        //   let iconName;
-        //   if (route.name === 'audio') {
-        //     iconName = 'google-podcast';
-        //   } else if (route.name === 'video') {
-        //     iconName = 'broadcast';
-        //   } else if (route.name === 'account') {
-        //     iconName = 'account-settings';
-        //   }
-        //   return (
-        //     <MaterialCommunityIcons name={iconName} size={size} color={color} />
-        //   );
-        // },
         tabBarIcon: ({color, size}) => {
           let iconName;
           if (route.name === 'audio') {
@@ -135,11 +122,18 @@ const BottomNav = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="audio"
+        name="AppTabs"
         options={{headerShown: false}}
         component={AppTabs}
       />
-      <Stack.Screen name="livestream" component={LiveStream} />
+      <Stack.Screen
+        name="livestream"
+        options={{
+          headerTransparent: true,
+          headerTintColor: '#fff',
+        }}
+        component={LiveStream}
+      />
     </Stack.Navigator>
   );
 };
