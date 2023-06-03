@@ -7,6 +7,7 @@ import LinearGradient from 'react-native-linear-gradient';
 //import Video from 'react-native-video';
 import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
 import MessageInputComponent from '../../components/MessageInputComponent';
+//import RtcSurfaceView from 'react-native-agora'
 
 const windowHeight = Dimensions.get('window').height;
 

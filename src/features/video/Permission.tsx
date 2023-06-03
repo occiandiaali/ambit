@@ -1,6 +1,6 @@
 import {PermissionsAndroid} from 'react-native';
 
-export default async function requestCameraAndAudioPermission() {
+async function requestCameraAndAudioPermission() {
   try {
     const granted = await PermissionsAndroid.requestMultiple([
       PermissionsAndroid.PERMISSIONS.CAMERA,
@@ -20,3 +20,5 @@ export default async function requestCameraAndAudioPermission() {
     console.warn(err);
   }
 }
+
+export default requestCameraAndAudioPermission;
