@@ -22,6 +22,7 @@ const LiveStream = ({route}) => {
   const mode = route.params.role;
   const engineRef = useRef<IRtcEngine>();
   const [joined, setJoined] = useState(false);
+  const [remoteUId, setRemoteUId] = useState(0);
 
   const isStreamer = mode === 'host';
 
@@ -48,6 +49,8 @@ const LiveStream = ({route}) => {
     if (isStreamer) {
       engineRef.current?.startPreview();
       engineRef.current?.setClientRole(ClientRoleType.ClientRoleBroadcaster);
+    } else {
+      engineRef.current?.setClientRole(ClientRoleType.ClientRoleAudience);
     }
   }, [isStreamer]);
 
@@ -62,18 +65,33 @@ const LiveStream = ({route}) => {
           setJoined(true);
         },
       );
+      engineRef.current?.addListener('onUserJoined', () => {
+        console.log(`Remote viewer joined with uid: ${uid}`);
+        setRemoteUId(uid);
+        setJoined(true);
+      });
+      engineRef.current?.addListener('onUserOffline', () => {
+        console.log(`Remote viewer ${remoteUId} just left the channel...`);
+        //  setJoined(false);
+      });
     });
     return () => {
+      engineRef.current?.removeAllListeners();
       engineRef.current?.release();
     };
-  }, [isStreamer, init, streamId]);
+  }, [isStreamer, init, streamId, remoteUId]);
 
   return (
     <SafeAreaView style={styles.container}>
       {!joined ? (
         <LoadingWait />
       ) : mode === 'guest' ? (
-        <GuestView castId={streamId} name={name} onLeave={leave} />
+        <GuestView
+          castId={streamId}
+          remoteUId={remoteUId}
+          name={name}
+          onLeave={leave}
+        />
       ) : (
         <HostView castId={streamId} name={name} onLeave={leave} />
       )}

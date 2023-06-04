@@ -3,19 +3,20 @@ import React from 'react';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
 
-const MessageInputComponent = ({onChangeText, value}) => {
+const MessageInputComponent = ({onChangeText, value, user}) => {
   return (
     <View style={styles.container}>
       <TextInput
         style={styles.input}
         onChangeText={onChangeText}
         value={value}
-        placeholder="Type message..."
-        // placeholderTextColor={'#948b8b'}
+        placeholder={` comment as ${user}...`}
         placeholderTextColor={'#fff'}
       />
-      <TouchableWithoutFeedback onPress={() => null} style={{top: 4, left: 18}}>
-        <MaterialCommunityIcons name="send-outline" size={46} />
+      <TouchableWithoutFeedback
+        onPress={() => null}
+        style={styles.sendIconWrap}>
+        <MaterialCommunityIcons name="send-outline" size={42} color="#fff" />
       </TouchableWithoutFeedback>
     </View>
   );
@@ -33,10 +34,12 @@ const styles = StyleSheet.create({
   input: {
     height: 56,
     width: '90%',
+    borderColor: '#fff',
     marginBottom: 12,
     marginLeft: 14,
     padding: 10,
     borderWidth: 1,
     borderRadius: 16,
   },
+  sendIconWrap: {top: 4, left: 18},
 });

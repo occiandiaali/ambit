@@ -60,7 +60,7 @@ const HostView = ({castId, name, onLeave}) => {
                   />
                 </View>
               </TouchableWithoutFeedback>
-              <Text style={styles.usernameText}>Hi, {name ?? 'Unknown'}</Text>
+              <Text style={styles.usernameText}>Hi, {name ?? 'Anonymous'}</Text>
               <TouchableWithoutFeedback onPress={onLeave}>
                 <MaterialCommunityIcons
                   name="exit-to-app"

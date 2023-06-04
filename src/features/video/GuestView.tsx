@@ -1,107 +1,101 @@
-import {Alert, Dimensions, StyleSheet, Text, View} from 'react-native';
+import {Dimensions, StyleSheet, Text, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import React, {useState} from 'react';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import LinearGradient from 'react-native-linear-gradient';
-//import Video from 'react-native-video';
+
 import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
 import MessageInputComponent from '../../components/MessageInputComponent';
-//import RtcSurfaceView from 'react-native-agora'
+import {RtcSurfaceView} from 'react-native-agora';
 
 const windowHeight = Dimensions.get('window').height;
 
-const GuestView = ({castId, name, onLeave}) => {
+const GuestView = ({castId, remoteUId, name, onLeave}) => {
   const [comment, setComment] = useState('');
 
-  const [valid, setValid] = useState(true);
   return (
     <SafeAreaView style={styles.container}>
       <LinearGradient
         colors={['#f0decc', '#f0b271', '#dd7508']}
-        style={{
-          flex: 1,
-          width: '100%',
-        }}>
-        {valid ? (
+        style={styles.gradientWrap}>
+        {castId ? (
           <>
-            {/** Render video player */}
-            <View
-              style={{
-                width: '100%',
-                height: windowHeight,
-                // top: 16,
-                //  backgroundColor: 'pink',
-              }}>
-              {/** Screen floating header for streamID and Leave icon */}
-              <View style={styles.floatingHeader}>
-                <Text style={{fontSize: 18, paddingLeft: 6}}>
-                  ID: {castId ?? 'Meeting ID'}
-                </Text>
-
-                <TouchableWithoutFeedback
-                  onPress={() => {
-                    onLeave;
-                    setValid(false);
-                  }}>
-                  <MaterialCommunityIcons name="exit-to-app" size={28} />
-                </TouchableWithoutFeedback>
-              </View>
-              <View style={{top: '14%', paddingLeft: 12}}>
-                <Text style={{fontSize: 18, fontWeight: 'bold', color: '#fff'}}>
-                  Hi, {name ?? 'Unknown'}
-                </Text>
-              </View>
-              <View
-                style={{
-                  position: 'absolute',
-                  right: 16,
-                  top: '48%',
-                }}>
-                <TouchableWithoutFeedback onPress={() => null}>
-                  <SimpleLineIcons
-                    name="like"
-                    size={36}
-                    color="#fff"
-                    style={styles.colIcons}
-                  />
-                </TouchableWithoutFeedback>
-                <TouchableWithoutFeedback onPress={() => null}>
-                  <MaterialCommunityIcons
-                    name="chat-processing-outline"
-                    size={36}
-                    color="#fff"
-                    style={styles.colIcons}
-                  />
-                </TouchableWithoutFeedback>
-                <TouchableWithoutFeedback onPress={() => null}>
-                  <MaterialCommunityIcons
-                    name="gift-outline"
-                    size={36}
-                    color="#fff"
-                    style={styles.colIcons}
-                  />
-                </TouchableWithoutFeedback>
-                <TouchableWithoutFeedback onPress={() => null}>
-                  <SimpleLineIcons
-                    name="globe"
-                    size={36}
-                    color="#fff"
-                    style={styles.colIcons}
-                  />
-                </TouchableWithoutFeedback>
-              </View>
-              <View
-                style={{
-                  position: 'absolute',
-                  bottom: 2, //-8,
-                  left: 14,
-                }}>
-                <MessageInputComponent
-                  value={comment}
-                  onChangeText={setComment}
+            <View>
+              <React.Fragment key={remoteUId}>
+                <RtcSurfaceView
+                  canvas={{uid: remoteUId}}
+                  style={styles.videoView}
                 />
-              </View>
+              </React.Fragment>
+            </View>
+
+            <View style={styles.floatingHeader}>
+              <Text style={styles.channelIdText}>
+                Channel: {castId ?? 'Channel ID'}
+              </Text>
+
+              <TouchableWithoutFeedback onPress={onLeave}>
+                <MaterialCommunityIcons
+                  name="exit-to-app"
+                  size={28}
+                  color="#fff"
+                />
+              </TouchableWithoutFeedback>
+            </View>
+            <View style={styles.usernameTextWrap}>
+              <Text style={styles.usernameText}>
+                Hi, {name ?? 'Anonymous'} - `(${remoteUId})`
+              </Text>
+            </View>
+            <View style={styles.colIconsView}>
+              <TouchableWithoutFeedback onPress={() => null}>
+                <SimpleLineIcons
+                  name="like"
+                  size={36}
+                  color="#fff"
+                  style={styles.colIcons}
+                />
+              </TouchableWithoutFeedback>
+              <TouchableWithoutFeedback onPress={() => null}>
+                <MaterialCommunityIcons
+                  name="chat-processing-outline"
+                  size={36}
+                  color="#fff"
+                  style={styles.colIcons}
+                />
+              </TouchableWithoutFeedback>
+              <TouchableWithoutFeedback onPress={() => null}>
+                <MaterialCommunityIcons
+                  name="gift-outline"
+                  size={36}
+                  color="#fff"
+                  style={styles.colIcons}
+                />
+              </TouchableWithoutFeedback>
+              <TouchableWithoutFeedback onPress={() => null}>
+                <SimpleLineIcons
+                  name="globe"
+                  size={36}
+                  color="#fff"
+                  style={styles.colIcons}
+                />
+              </TouchableWithoutFeedback>
+              <TouchableWithoutFeedback onPress={onLeave}>
+                <MaterialCommunityIcons
+                  name="exit-to-app"
+                  size={32}
+                  color="#fff"
+                />
+              </TouchableWithoutFeedback>
+            </View>
+
+            <View style={styles.commentInput}>
+              <MessageInputComponent
+                user={name}
+                value={comment}
+                onChangeText={setComment}
+              />
             </View>
           </>
         ) : (
@@ -118,8 +112,19 @@ const GuestView = ({castId, name, onLeave}) => {
 export default GuestView;
 
 const styles = StyleSheet.create({
+  channelIdText: {fontSize: 18, paddingLeft: 6, color: '#fff'},
   colIcons: {
     marginBottom: 32,
+  },
+  colIconsView: {
+    position: 'absolute',
+    right: 16,
+    top: '38%',
+  },
+  commentInput: {
+    position: 'absolute',
+    bottom: 2,
+    left: 14,
   },
   container: {
     flex: 1,
@@ -128,16 +133,27 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   floatingHeader: {
-    top: '16%', //36,
+    top: '16%',
     bottom: 8,
     right: 8,
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: 16,
   },
+  gradientWrap: {
+    width: '100%',
+    height: windowHeight,
+  },
   noStreamContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  usernameText: {fontSize: 18, fontWeight: 'bold', color: '#fff'},
+  usernameTextWrap: {top: '14%', paddingLeft: 12},
+  videoView: {
+    width: '100%',
+    height: windowHeight,
+    alignSelf: 'center',
   },
 });

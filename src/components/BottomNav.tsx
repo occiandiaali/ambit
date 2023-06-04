@@ -62,15 +62,12 @@ function AppTabs() {
         },
         tabBarStyle: {
           height: 72,
-          paddingTop: 8,
+          paddingTop: 6,
           paddingBottom: 12,
           margin: 18,
           elevation: 2,
           position: 'absolute',
-          borderTopLeftRadius: 16,
-          borderTopRightRadius: 16,
-          borderBottomLeftRadius: 16,
-          borderBottomRightRadius: 16,
+          borderRadius: 38,
         },
         tabBarLabelStyle: {fontSize: 12},
         tabBarIcon: ({color, size}) => {
