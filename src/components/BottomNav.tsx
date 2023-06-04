@@ -7,14 +7,16 @@ import AudioHome from '../features/audio/AudioHome';
 import VideoHome from '../features/video/VideoHome';
 import AccountHome from '../features/account/AccountHome';
 
+import LiveStream from '../features/video/LiveStream';
+
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 function AudioStack() {
   return (
-    <Stack.Navigator initialRouteName="audio">
+    <Stack.Navigator initialRouteName="audio-home">
       <Stack.Screen
-        name="Audio"
+        name="audio-home"
         options={{headerShown: false}}
         component={AudioHome}
       />
@@ -24,9 +26,9 @@ function AudioStack() {
 
 function VideoStack() {
   return (
-    <Stack.Navigator initialRouteName="video">
+    <Stack.Navigator initialRouteName="video-home">
       <Stack.Screen
-        name="Video"
+        name="video-home"
         options={{headerShown: false}}
         component={VideoHome}
       />
@@ -36,9 +38,9 @@ function VideoStack() {
 
 function AccountStack() {
   return (
-    <Stack.Navigator initialRouteName="account">
+    <Stack.Navigator initialRouteName="account-home">
       <Stack.Screen
-        name="Account"
+        name="account-home"
         options={{headerShown: false}}
         component={AccountHome}
       />
@@ -46,19 +48,11 @@ function AccountStack() {
   );
 }
 
-// const SetTabIcons = ({focused, route, size}) => {
-//   let iconName = '';
-//   if (route.name === 'audio') {
-//     iconName = 'google-podcast';
-//   } else if (route.name === 'video') {
-//     iconName = 'broadcast';
-//   } else if (route.name === 'account') {
-//     iconName = 'account-settings';
-//   }
-//   return <MaterialCommunityIcons name={iconName} size={size} color={focused ? 'tomato' : 'gray'}/>;
-// };
+const renderIcon = (iconName, size, color) => (
+  <MaterialCommunityIcons name={iconName} size={size} color={color} />
+);
 
-const BottomNav = () => {
+function AppTabs() {
   return (
     <Tab.Navigator
       screenOptions={({route}) => ({
@@ -88,17 +82,47 @@ const BottomNav = () => {
           } else if (route.name === 'account') {
             iconName = 'account-settings';
           }
-          return (
-            <MaterialCommunityIcons name={iconName} size={size} color={color} />
-          );
+          return renderIcon(iconName, size, color);
         },
         tabBarActiveTintColor: 'tomato',
         tabBarInactiveTintColor: 'gray',
       })}>
-      <Tab.Screen name="audio" component={AudioStack} />
-      <Tab.Screen name="video" component={VideoStack} />
-      <Tab.Screen name="account" component={AccountStack} />
+      <Tab.Screen
+        name="audio"
+        options={{headerShown: false}}
+        component={AudioStack}
+      />
+      <Tab.Screen
+        name="video"
+        options={{headerShown: false}}
+        component={VideoStack}
+      />
+      <Tab.Screen
+        name="account"
+        options={{headerShown: false}}
+        component={AccountStack}
+      />
     </Tab.Navigator>
+  );
+}
+
+const BottomNav = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="AppTabs"
+        options={{headerShown: false}}
+        component={AppTabs}
+      />
+      <Stack.Screen
+        name="livestream"
+        options={{
+          headerTransparent: true,
+          headerTintColor: '#fff',
+        }}
+        component={LiveStream}
+      />
+    </Stack.Navigator>
   );
 };
 
