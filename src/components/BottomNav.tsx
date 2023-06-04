@@ -106,18 +106,6 @@ function AppTabs() {
   );
 }
 
-// const SetTabIcons = ({focused, route, size}) => {
-//   let iconName = '';
-//   if (route.name === 'audio') {
-//     iconName = 'google-podcast';
-//   } else if (route.name === 'video') {
-//     iconName = 'broadcast';
-//   } else if (route.name === 'account') {
-//     iconName = 'account-settings';
-//   }
-//   return <MaterialCommunityIcons name={iconName} size={size} color={focused ? 'tomato' : 'gray'}/>;
-// };
-
 const BottomNav = () => {
   return (
     <Stack.Navigator>

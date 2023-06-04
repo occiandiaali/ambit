@@ -12,9 +12,11 @@ import {
 } from 'react-native-agora';
 import requestCameraAndAudioPermission from './Permission';
 import LoadingWait from '../../components/LoadingWait';
+import {useNavigation} from '@react-navigation/native';
 
 const LiveStream = ({route}) => {
   // const token = route.params.token;
+  const navigation = useNavigation();
   const streamId = route.params.streamId;
   const name = route.params.username ? route.params.username : 'Anonymous';
   const mode = route.params.role;
@@ -23,17 +25,29 @@ const LiveStream = ({route}) => {
 
   const isStreamer = mode === 'host';
 
+  const leave = () => {
+    try {
+      engineRef.current?.leaveChannel();
+      setJoined(false);
+      navigation.navigate('video');
+    } catch (e) {
+      console.log('Leave error: ', e);
+    }
+  };
+
   const init = useCallback(async () => {
     if (Platform.OS === 'android') {
       await requestCameraAndAudioPermission();
     }
     engineRef.current = createAgoraRtcEngine();
-    engineRef.current.initialize({appId: '4303d37b0ced43958f1cac74afc7cee3'});
+    engineRef.current.initialize({appId: '65aca7415bf74b70a0a4981c71c69581'});
+    engineRef.current.enableVideo();
     engineRef.current.setChannelProfile(
       ChannelProfileType.ChannelProfileLiveBroadcasting,
     );
     if (isStreamer) {
-      engineRef.current.setClientRole(ClientRoleType.ClientRoleBroadcaster);
+      engineRef.current?.startPreview();
+      engineRef.current?.setClientRole(ClientRoleType.ClientRoleBroadcaster);
     }
   }, [isStreamer]);
 
@@ -59,9 +73,9 @@ const LiveStream = ({route}) => {
       {!joined ? (
         <LoadingWait />
       ) : mode === 'guest' ? (
-        <GuestView castId={streamId} name={name} />
+        <GuestView castId={streamId} name={name} onLeave={leave} />
       ) : (
-        <HostView castId={streamId} name={name} />
+        <HostView castId={streamId} name={name} onLeave={leave} />
       )}
     </SafeAreaView>
   );

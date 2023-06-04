@@ -11,7 +11,7 @@ import MessageInputComponent from '../../components/MessageInputComponent';
 
 const windowHeight = Dimensions.get('window').height;
 
-const GuestView = ({castId, name}) => {
+const GuestView = ({castId, name, onLeave}) => {
   const [comment, setComment] = useState('');
 
   const [valid, setValid] = useState(true);
@@ -39,7 +39,11 @@ const GuestView = ({castId, name}) => {
                   ID: {castId ?? 'Meeting ID'}
                 </Text>
 
-                <TouchableWithoutFeedback onPress={() => setValid(false)}>
+                <TouchableWithoutFeedback
+                  onPress={() => {
+                    onLeave;
+                    setValid(false);
+                  }}>
                   <MaterialCommunityIcons name="exit-to-app" size={28} />
                 </TouchableWithoutFeedback>
               </View>

@@ -35,22 +35,8 @@ const HostInput = ({
         }}
         children={
           <>
-            <Text
-              style={{
-                fontSize: 21,
-                top: 18,
-                fontWeight: '700',
-                textAlign: 'center',
-              }}>
-              Start a new LiveStream
-            </Text>
-            <View
-              style={{
-                width: '100%',
-                justifyContent: 'center',
-                alignItems: 'center',
-                bottom: 64,
-              }}>
+            <Text style={styles.headingText}>Start a new LiveStream</Text>
+            <View style={styles.formContent}>
               <Text>Channel ID: {link}</Text>
               <TextInput
                 style={styles.input}
@@ -77,8 +63,8 @@ const HostInput = ({
                     backgroundColor: username.length < 3 ? '#e7e4e4' : 'orange',
                   },
                 ]}>
-                {/* <MaterialCommunityIcons name="video-outline" size={24} /> */}
-                <Text style={{fontSize: 18, right: 12}}>Create</Text>
+                <MaterialCommunityIcons name="video-check-outline" size={24} />
+                <Text style={styles.createText}>Create new</Text>
               </Pressable>
             </View>
           </>
@@ -96,11 +82,23 @@ const styles = StyleSheet.create({
     width: '110%',
     height: windowHeight * 0.58,
     backgroundColor: '#fff',
-    // padding: 6,
     justifyContent: 'center',
     alignItems: 'center',
     top: 2,
     bottom: 160,
+  },
+  createText: {fontSize: 18, right: 12},
+  formContent: {
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    bottom: 64,
+  },
+  headingText: {
+    fontSize: 21,
+    top: 18,
+    fontWeight: '700',
+    textAlign: 'center',
   },
   input: {
     height: 56,
@@ -118,7 +116,6 @@ const styles = StyleSheet.create({
     marginTop: 12,
     justifyContent: 'space-evenly',
     alignItems: 'center',
-    // paddingLeft: 42,
     flexDirection: 'row',
     backgroundColor: 'orange',
   },
