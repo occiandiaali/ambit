@@ -11,8 +11,8 @@ React Native CLI, APIs, multimedia app
 <img src="https://github.com/occiandiaali/ambit/assets/40769994/c4fae458-86e2-48d7-80e6-bcaf0770d248jpg" height="360"> 
 <img src="https://github.com/occiandiaali/ambit/assets/40769994/691ed2c7-f20b-441e-91b7-4e6f0cd4e788.jpg" height="360"> 
 <img src="https://github.com/occiandiaali/ambit/assets/40769994/efd757d1-8c8f-4231-867c-5d194e5f3dc0.jpg" height="360"> 
-<img src="https://github.com/occiandiaali/ambit/assets/40769994/4cf64237-5abe-4468-92bd-749bbcdcc287.jpg" height="360"> 
-
-<img src="https://github.com/occiandiaali/ambit/assets/40769994/ae9daecb-bdb9-42d0-8adc-88c333ad1ab5.jpg" height="360">
+<img src="https://github.com/occiandiaali/ambit/assets/40769994/72e135d0-f8d0-4f3e-944a-0981afdc2588.jpg" height="360"> 
+<img src="https://github.com/occiandiaali/ambit/assets/40769994/678ff0a3-3970-4a8c-b9c2-fa68d5afd9b2.jpg" height="360">   
+<img src="https://github.com/occiandiaali/ambit/assets/40769994/4cf64237-5abe-4468-92bd-749bbcdcc287.jpg" height="360"> <img src="https://github.com/occiandiaali/ambit/assets/40769994/ae9daecb-bdb9-42d0-8adc-88c333ad1ab5.jpg" height="360">
           
 
