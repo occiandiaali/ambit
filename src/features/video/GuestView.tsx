@@ -13,6 +13,9 @@ const windowHeight = Dimensions.get('window').height;
 
 const GuestView = ({castId, remoteUId, name, onLeave}) => {
   const [comment, setComment] = useState('');
+  const [isAuxVisible, setIsAuxVisible] = useState(true);
+
+  const toggleAuxVisibility = () => setIsAuxVisible(prev => !prev);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -21,82 +24,102 @@ const GuestView = ({castId, remoteUId, name, onLeave}) => {
         style={styles.gradientWrap}>
         {castId ? (
           <>
-            <View>
+            <TouchableWithoutFeedback onPress={() => toggleAuxVisibility()}>
               <React.Fragment key={remoteUId}>
                 <RtcSurfaceView
                   canvas={{uid: remoteUId}}
                   style={styles.videoView}
+                  zOrderOnTop={false}
                 />
               </React.Fragment>
-            </View>
+            </TouchableWithoutFeedback>
 
-            <View style={styles.floatingHeader}>
-              <Text style={styles.channelIdText}>
-                Channel: {castId ?? 'Channel ID'}
-              </Text>
+            {isAuxVisible ? (
+              <View style={styles.floatingHeader}>
+                <Text style={styles.channelIdText}>
+                  channel: {castId ?? 'Channel ID'}
+                </Text>
 
-              <TouchableWithoutFeedback onPress={onLeave}>
-                <MaterialCommunityIcons
-                  name="exit-to-app"
-                  size={28}
-                  color="#fff"
-                />
-              </TouchableWithoutFeedback>
-            </View>
-            <View style={styles.usernameTextWrap}>
+                <TouchableWithoutFeedback onPress={onLeave}>
+                  <MaterialCommunityIcons
+                    name="exit-to-app"
+                    size={28}
+                    color="#fff"
+                  />
+                </TouchableWithoutFeedback>
+              </View>
+            ) : null}
+
+            {/* <View style={styles.usernameTextWrap}>
               <Text style={styles.usernameText}>
                 Hi, {name ?? 'Anonymous'} - `(${remoteUId})`
               </Text>
-            </View>
-            <View style={styles.colIconsView}>
-              <TouchableWithoutFeedback onPress={() => null}>
-                <SimpleLineIcons
-                  name="like"
-                  size={36}
-                  color="#fff"
-                  style={styles.colIcons}
-                />
-              </TouchableWithoutFeedback>
-              <TouchableWithoutFeedback onPress={() => null}>
-                <MaterialCommunityIcons
-                  name="chat-processing-outline"
-                  size={36}
-                  color="#fff"
-                  style={styles.colIcons}
-                />
-              </TouchableWithoutFeedback>
-              <TouchableWithoutFeedback onPress={() => null}>
-                <MaterialCommunityIcons
-                  name="gift-outline"
-                  size={36}
-                  color="#fff"
-                  style={styles.colIcons}
-                />
-              </TouchableWithoutFeedback>
-              <TouchableWithoutFeedback onPress={() => null}>
-                <SimpleLineIcons
-                  name="globe"
-                  size={36}
-                  color="#fff"
-                  style={styles.colIcons}
-                />
-              </TouchableWithoutFeedback>
-              <TouchableWithoutFeedback onPress={onLeave}>
-                <MaterialCommunityIcons
-                  name="exit-to-app"
-                  size={32}
-                  color="#fff"
-                />
-              </TouchableWithoutFeedback>
-            </View>
+            </View> */}
+            {isAuxVisible ? (
+              <View style={styles.colIconsView}>
+                <TouchableWithoutFeedback
+                  onPress={() => {
+                    isAuxVisible ? console.log('Liked..') : null;
+                  }}>
+                  <SimpleLineIcons
+                    name="like"
+                    size={36}
+                    color="#fff"
+                    style={styles.colIcons}
+                  />
+                </TouchableWithoutFeedback>
+                <TouchableWithoutFeedback
+                  onPress={() => null}
+                  disabled={isAuxVisible}>
+                  <MaterialCommunityIcons
+                    name="chat-processing-outline"
+                    size={36}
+                    color="#fff"
+                    style={styles.colIcons}
+                  />
+                </TouchableWithoutFeedback>
+                <TouchableWithoutFeedback
+                  onPress={() => null}
+                  disabled={isAuxVisible}>
+                  <MaterialCommunityIcons
+                    name="gift-outline"
+                    size={36}
+                    color="#fff"
+                    style={styles.colIcons}
+                  />
+                </TouchableWithoutFeedback>
+                <TouchableWithoutFeedback
+                  onPress={() => null}
+                  disabled={isAuxVisible}>
+                  <SimpleLineIcons
+                    name="globe"
+                    size={36}
+                    color="#fff"
+                    style={styles.colIcons}
+                  />
+                </TouchableWithoutFeedback>
+                <TouchableWithoutFeedback
+                  onPress={() => null}
+                  disabled={isAuxVisible}>
+                  <MaterialCommunityIcons
+                    name="content-save-cog-outline"
+                    size={32}
+                    color="#fff"
+                  />
+                </TouchableWithoutFeedback>
+              </View>
+            ) : null}
 
-            <View style={styles.commentInput}>
-              <MessageInputComponent
-                user={name}
-                value={comment}
-                onChangeText={setComment}
-              />
-            </View>
+            {isAuxVisible ? (
+              <View style={styles.commentInput}>
+                <MessageInputComponent
+                  isEnabled={isAuxVisible}
+                  user={name}
+                  value={comment}
+                  onChangeText={setComment}
+                />
+              </View>
+            ) : null}
           </>
         ) : (
           <SafeAreaView style={styles.noStreamContainer}>
@@ -112,18 +135,19 @@ const GuestView = ({castId, remoteUId, name, onLeave}) => {
 export default GuestView;
 
 const styles = StyleSheet.create({
-  channelIdText: {fontSize: 18, paddingLeft: 6, color: '#fff'},
+  channelIdText: {fontSize: 16, color: '#fff', right: '25%'},
   colIcons: {
+    zIndex: 99,
     marginBottom: 32,
   },
   colIconsView: {
     position: 'absolute',
     right: 16,
-    top: '38%',
+    top: '32%',
   },
   commentInput: {
     position: 'absolute',
-    bottom: 2,
+    bottom: 14,
     left: 14,
   },
   container: {
@@ -133,11 +157,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   floatingHeader: {
+    position: 'absolute',
     top: '16%',
     bottom: 8,
-    right: 8,
+    right: 4,
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'space-evenly',
     paddingHorizontal: 16,
   },
   gradientWrap: {

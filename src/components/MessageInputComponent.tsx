@@ -3,11 +3,12 @@ import React from 'react';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
 
-const MessageInputComponent = ({onChangeText, value, user}) => {
+const MessageInputComponent = ({onChangeText, value, user, isEnabled}) => {
   return (
     <View style={styles.container}>
       <TextInput
         style={styles.input}
+        editable={isEnabled}
         onChangeText={onChangeText}
         value={value}
         placeholder={` comment as ${user}...`}
@@ -34,6 +35,7 @@ const styles = StyleSheet.create({
   input: {
     height: 56,
     width: '90%',
+    color: '#FFF',
     borderColor: '#fff',
     marginBottom: 12,
     marginLeft: 14,
