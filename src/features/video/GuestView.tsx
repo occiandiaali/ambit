@@ -50,11 +50,6 @@ const GuestView = ({castId, remoteUId, name, onLeave}) => {
               </View>
             ) : null}
 
-            {/* <View style={styles.usernameTextWrap}>
-              <Text style={styles.usernameText}>
-                Hi, {name ?? 'Anonymous'} - `(${remoteUId})`
-              </Text>
-            </View> */}
             {isAuxVisible ? (
               <View style={styles.colIconsView}>
                 <TouchableWithoutFeedback
@@ -143,11 +138,11 @@ const styles = StyleSheet.create({
   colIconsView: {
     position: 'absolute',
     right: 16,
-    top: '32%',
+    top: '38%',
   },
   commentInput: {
     position: 'absolute',
-    bottom: 14,
+    bottom: 6,
     left: 14,
   },
   container: {
@@ -158,7 +153,7 @@ const styles = StyleSheet.create({
   },
   floatingHeader: {
     position: 'absolute',
-    top: '16%',
+    top: '12%',
     bottom: 8,
     right: 4,
     flexDirection: 'row',

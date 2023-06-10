@@ -11,6 +11,7 @@ import React, {useState} from 'react';
 import Clipboard from '@react-native-community/clipboard';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
 
 import {RtcSurfaceView} from 'react-native-agora';
 import LinearGradient from 'react-native-linear-gradient';
@@ -69,19 +70,17 @@ const HostView = ({castId, name, onLeave}) => {
                 />
               </TouchableWithoutFeedback>
             </View>
+            <View style={styles.eyeIcon}>
+              <MaterialCommunityIcons
+                style={styles.iconPadding}
+                name={cam !== false ? 'eye-outline' : 'eye-off-outline'}
+                size={38}
+                color="#FFF"
+              />
+              <Text style={styles.eyeIconText}>0</Text>
+            </View>
 
             <View style={styles.controlsWrapper}>
-              <TouchableWithoutFeedback
-                onPress={() => {
-                  setMic(prev => !prev);
-                }}>
-                <MaterialCommunityIcons
-                  style={styles.iconPadding}
-                  name={mic === false ? 'microphone-off' : 'microphone'}
-                  size={48}
-                  color="orange"
-                />
-              </TouchableWithoutFeedback>
               <TouchableWithoutFeedback
                 onPress={() => {
                   setCam(prev => !prev);
@@ -89,10 +88,22 @@ const HostView = ({castId, name, onLeave}) => {
                 <MaterialCommunityIcons
                   style={styles.iconPadding}
                   name={cam !== false ? 'webcam' : 'webcam-off'}
-                  size={48}
-                  color="orange"
+                  size={38}
+                  color="#FFF"
                 />
               </TouchableWithoutFeedback>
+              <TouchableWithoutFeedback
+                onPress={() => {
+                  setMic(prev => !prev);
+                }}>
+                <MaterialCommunityIcons
+                  style={styles.iconPadding}
+                  name={mic === false ? 'microphone-off' : 'microphone'}
+                  size={38}
+                  color="#FFF"
+                />
+              </TouchableWithoutFeedback>
+
               <TouchableWithoutFeedback
                 onPress={() => {
                   setCast(prev => !prev);
@@ -100,8 +111,19 @@ const HostView = ({castId, name, onLeave}) => {
                 <MaterialCommunityIcons
                   style={styles.iconPadding}
                   name={cast === false ? 'broadcast-off' : 'broadcast'}
-                  size={48}
-                  color="orange"
+                  size={38}
+                  color="#FFF"
+                />
+              </TouchableWithoutFeedback>
+              <TouchableWithoutFeedback
+                onPress={() => {
+                  setCam(prev => !prev);
+                }}>
+                <FontAwesome5Icon
+                  style={styles.iconPadding}
+                  name="ban"
+                  size={38}
+                  color="#FFF"
                 />
               </TouchableWithoutFeedback>
             </View>
@@ -128,9 +150,20 @@ const styles = StyleSheet.create({
   },
   controlsWrapper: {
     position: 'absolute',
-    flexDirection: 'row',
-    left: 10,
-    bottom: -12,
+    alignSelf: 'flex-end',
+    top: windowHeight * 0.45,
+  },
+  eyeIcon: {
+    position: 'absolute',
+    top: '15%',
+    right: 4,
+  },
+  eyeIconText: {
+    color: '#FFF',
+    fontSize: 18,
+    position: 'absolute',
+    top: '64%',
+    right: 38,
   },
   floatingHeader: {
     flexDirection: 'row',
@@ -142,7 +175,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: windowHeight,
   },
-  iconPadding: {padding: 34},
+  iconPadding: {padding: 24},
   idAndIconRow: {
     flexDirection: 'row',
     justifyContent: 'space-around',
